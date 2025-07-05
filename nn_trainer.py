@@ -5,6 +5,26 @@ import time
 import random
 from ia import lister_ias, charger_ia
 
+def demander_int(message, min_val, max_val):
+    while True:
+        try:
+            val = int(input(f"{message} ({min_val}-{max_val}): "))
+            if min_val <= val <= max_val:
+                return val
+            print(f"Erreur: la valeur doit être comprise entre {min_val} et {max_val}.")
+        except ValueError:
+            print("Erreur: veuillez entrer un nombre entier.")
+
+def demander_float(message, min_val, max_val):
+    while True:
+        try:
+            val = float(input(f"{message} ({min_val}-{max_val}): "))
+            if min_val <= val <= max_val:
+                return val
+            print(f"Erreur: la valeur doit être comprise entre {min_val} et {max_val}.")
+        except ValueError:
+            print("Erreur: veuillez entrer un nombre décimal.")
+
 def entrainer_ia():
     print("\n=== ENTRAÎNEMENT D'IA - RÉSEAUX DE NEURONES ===")
     
@@ -52,7 +72,7 @@ def entrainer_ia():
     # Paramètres d'entraînement
     while True:
         try:
-            epochs = int(input("Nombre d'époques d'entraînement (1-1000): "))
+            epochs = demander_int("Nombre d'époques d'entraînement", 1, 1000)
             if 1 <= epochs <= 1000:
                 break
             print("Erreur: le nombre doit être entre 1 et 1000.")
@@ -61,7 +81,7 @@ def entrainer_ia():
     
     while True:
         try:
-            nb_parties = int(input("Nombre de parties par époque (10-1000): "))
+            nb_parties = demander_int("Nombre de parties par époque", 10, 1000)
             if 10 <= nb_parties <= 1000:
                 break
             print("Erreur: le nombre doit être entre 10 et 1000.")
@@ -70,7 +90,7 @@ def entrainer_ia():
     
     while True:
         try:
-            learning_rate = float(input("Taux d'apprentissage (0.001-0.1): "))
+            learning_rate = demander_float("Taux d'apprentissage", 0.001, 0.1)
             if 0.001 <= learning_rate <= 0.1:
                 break
             print("Erreur: le taux doit être entre 0.001 et 0.1.")
