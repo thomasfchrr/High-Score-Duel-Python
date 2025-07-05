@@ -68,8 +68,8 @@ class NeuralNetwork:
         # Structure du réseau
         self.input_size = 7   # 3 cases joueur + 3 cases adversaire + chiffre
         self.output_size = 3  # probabilités pour chaque case
-        self.hidden_layers = {nb_couches}
-        self.neurons_per_layer = {nb_neurones}
+        self.hidden_layers = {{nb_couches}}
+        self.neurons_per_layer = {{nb_neurones}}
         
         # Initialisation des poids
         self.initialize_weights()
@@ -158,20 +158,33 @@ class NeuralNetwork:
                 self.backward(X_batch, y_batch, learning_rate)
     
     def save_weights(self, filename):
-        # Sauvegarde des poids dans un fichier NPZ
         np.savez(filename, 
-                 weights=np.array(self.weights, dtype=object), 
-                 biases=np.array(self.biases, dtype=object),
-                 hidden_layers=np.array([self.hidden_layers]),
-                 neurons_per_layer=np.array([self.neurons_per_layer]))
+                **{
+                    f"w{{i}}": w for i, w in enumerate(self.weights)
+                },
+                **{
+                    f"b{{i}}": b for i, b in enumerate(self.biases)
+                },
+                hidden_layers=self.hidden_layers,
+                neurons_per_layer=self.neurons_per_layer)
+
     
     def load_weights(self, filename):
-        # Chargement des poids depuis un fichier NPZ
-        data = np.load(filename, allow_pickle=True)
-        self.weights = data['weights']
-        self.biases = data['biases']
-        self.hidden_layers = data['hidden_layers'].item()
-        self.neurons_per_layer = data['neurons_per_layer'].item()
+        data = np.load(filename)
+        self.hidden_layers = int(data['hidden_layers'])
+        self.neurons_per_layer = int(data['neurons_per_layer'])
+
+        self.weights = []
+        self.biases = []
+        i = 0
+        while f"w{{i}}" in data:
+            self.weights.append(data[f"w{{i}}"])
+            i += 1
+        i = 0
+        while f"b{{i}}" in data:
+            self.biases.append(data[f"b{{i}}"])
+            i += 1
+
 
 # Créer une instance du réseau
 model = NeuralNetwork()

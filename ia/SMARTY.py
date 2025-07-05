@@ -21,4 +21,5 @@ def choisir_case(chiffre, placement_ia, placement_adv):
     # Sécurité
     return 1
 
-ia = choisir_case
+def ia(chiffre, cases_perso, cases_adversaire):
+    return choisir_case(chiffre, cases_perso, cases_adversaire)
